@@ -1,0 +1,59 @@
+mgp structure:
+x y
+width height
+rotation rotationspeed
+velocity_x velocity_y
+name minimal maximal param_1 param_2 ...
+
+------------------------------------------------------------------------
+//Modular MapGen language and infrastructure
+
+//Section 0 - preface and generator mechanics
+//The generator operates on a 2d array of dictionaries (key-value pairs) - some standard keys are "block", "blocktag" (for example for multiple types of logs),
+//"biome" and "surface" - the "block" key stores a string as the value, but the "surface" key stores a 0 or 1 (boolean) - it is a tag
+
+//Section 1 - variables
+//All variables are floats,
+//Except strings
+//There are preexisting variables x and y, which show the origin of the structure in world space
+
+VAL variable_name 1.3
+STR string_name "string"
+RND random_variable_integer 12 17 1
+RND random_variable 0.1 76 0
+// Syntax for random:
+// RND name x y z
+// x - minimal value (inclusive); y - maximal value (not inclusive); z - modulo, 0 for none
+VALIN input_variable 0
+STRIN input_string 1
+// 0 - array index of variable
+
+//Section 2 - conditions, queries and forks
+//Conditions are standard conditions required 
+//Forks are like if statements
+//Queries are like conditions but are checked before executing the code on a specific block - as such, they contain only a location, a range and a tag
+//Queries are made so that the generator can quickly find viable spots; if a query returns false nothing happens and the iteration carries on, 
+//but if a conditions fails the structure generation returns a fail report, which can be handled in multiple ways
+//The available conditions:
+//HASVALUE - like QUERY
+//EVAL - a normal condition, uses Godots "expression.execute" and can utilize variables from the structure package
+//maybe more
+
+//search for a block tagged "surface" within 3 block radius from the block 1 block to the right of the origin; the last 1 means that only one block has to be surface
+//The last 0 means that the search isn't inverted, where it fails if there are more than x matches in the area
+QUERY 1 0 3 "surface" 1 1 0
+
+//checks if there is a coal ore block one block below and to the right of origin
+CON 1 1 0 "block" "coal_ore" 1 0
+
+//
+IF HASVALUE 0 -1 6 "blocktag" "wood_block" 2 1
+VAL variable_name 0
+ELIF EVAL sin(random_variable) >= 0.5
+EVAL random_variable random_variable + input_variable
+//EVAL is also used to assign expressions to values
+ELSE
+ESTR string_name input_string
+//ESTR is like EVAL but for strings
+ENDIF
+

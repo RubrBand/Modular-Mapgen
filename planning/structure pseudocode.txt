@@ -1,0 +1,43 @@
+//Code for a sunspaced structure
+//Structure gets called
+
+//Generate structure and adhesive
+{
+	Create structure - run commands and apply tilemaps specific to this structure to a blank canvas
+	
+	If needed, create an array of special spaces
+	
+	//Generate substructures
+	{
+		reserve locations for structures
+		queue of structures
+		
+		for each structure:
+		{
+			if subspaced 
+			{
+				run this code
+				
+				check if adhesive sticks
+				if it does apply structure using the adhesive
+			}
+			else
+			{
+				run creation code
+				
+				check if adhesive sticks
+				if it does apply structure using the adhesive
+				
+				any children of a spaceless structure are added to the front of the queue instead
+			}
+			
+			remove from queue
+		}
+		
+	}
+	
+}
+
+return adhesive to parent (if the adhesive cannot be applied the structure generation fails)
+
+return structure to parent

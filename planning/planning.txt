@@ -1,0 +1,36 @@
+UI
+File Explorer - in gd
+World Structure - in gd
+Structure editor - in gd
+Properties window - in gd
+Code editor - in gd
+
+CODE
+
+
+STRUCTURES
+
+Structure types:
+reserved - locations are predetermined (and never generated procedurally)
+free - locations are generated randomly, so there is an unknown amount of structures and the generation of a structure can fail
+
+Subspaced - when a chunk of the structure is generated, the whole structure is generated in a separate file and then applied to save memory
+Spaceless - structure does not create another file and is applied instantly to the parent (this is for large structures like biomes that would take too much memory loaded all at once, and small decor or subrooms where it would be a waste of space)
+
+tilemap subspacing - submaps are generated depending on the tilemap of the parent
+node subspacing - (probably only available for subspaced structures) submaps are generated on specific nodes saved in an array instead (for dungeons, caves, and for example loot locations in dungeons)
+
+class generator:
+int bitsize - determines how many bits need to be used for a single tile. the resulting type will be called "tile"
+
+class structure:
+
+bool cached
+bool prefabricated
+tile[] generate() (optional) - generates the structure and saves it in memory
+tile get() - generates the particular tile or gets it from memory
+
+Tile is an array of 3 values:
+0 - tile id
+1 - adhesive type - 
+2 - filter (optional) - specifies block id for the adhesive. Negative values below -1 can be used for custom applications (for example, replace only air and liquids)
